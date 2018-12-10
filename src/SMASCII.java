@@ -10,6 +10,8 @@ public class SMASCII {
     }
 
     public void add(String username) {
+        username = username.toLowerCase();
+
         AlphabetDatabase db = this.getAlphabetDatabase(username);
         Alphabet alphabetDb = this.getAlphabetContainer(username, db);
 
@@ -35,6 +37,8 @@ public class SMASCII {
     }
 
     public boolean find(String text) {
+        text = text.toLowerCase();
+
         AlphabetDatabase db = this.getAlphabetDatabase(text);
         Alphabet alphabetDb = this.getAlphabetContainer(text, db);
 

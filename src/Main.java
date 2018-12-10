@@ -5,6 +5,9 @@ public class Main {
         item.add("binaragaa");
         item.add("binaragaa");
 
+        KmpStringMatcher kmp = new KmpStringMatcher("binaragar");
+        System.out.println(kmp.search("binaragaa"));
 
+        System.out.println(NaiveStringMatcher.search1("binaragab", "binaragaa"));
     }
 }
