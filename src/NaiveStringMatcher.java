@@ -26,7 +26,7 @@ public class NaiveStringMatcher {
             if (j == m) return i;            // found at offset i
         }
 
-        return n;                            // not found
+        return -1;                            // not found
     }
 
     // return offset of first match or N if no match
@@ -42,7 +42,7 @@ public class NaiveStringMatcher {
             }
         }
         if (j == m) return i - m;    // found
-        else        return n;        // not found
+        else        return -1;        // not found
     }
 
 
@@ -63,7 +63,7 @@ public class NaiveStringMatcher {
             }
             if (j == m) return i;            // found at offset i
         }
-        return n;                            // not found
+        return -1;                            // not found
     }
 
     // return offset of first match or n if no match
@@ -79,7 +79,7 @@ public class NaiveStringMatcher {
             }
         }
         if (j == m) return i - m;    // found
-        else        return n;        // not found
+        else        return -1;        // not found
     }
 
 

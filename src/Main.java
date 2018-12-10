@@ -8,6 +8,6 @@ public class Main {
         KmpStringMatcher kmp = new KmpStringMatcher("binaragar");
         System.out.println(kmp.search("binaragaa"));
 
-        System.out.println(NaiveStringMatcher.search1("binaragab", "binaragaa"));
+        System.out.println(NaiveStringMatcher.search1("nara", "binaragaa"));
     }
 }
