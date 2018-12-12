@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -103,6 +102,9 @@ public class Main {
             e.printStackTrace();
         }
 
+        li.clear();
+        li.addAll(getItem());
+
         String text = contentBuilder.toString();
 
         long sum = 0;
@@ -144,6 +146,10 @@ public class Main {
             e.printStackTrace();
         }
 
+        li.clear();
+        li.addAll(getItem());
+
+
         String text = contentBuilder.toString();
 
         long sum = 0;
@@ -171,6 +177,9 @@ public class Main {
             }
         });
 
+        li.clear();
+        li.addAll(getItem());
+
         long sum = 0;
 
         for (String tc :
@@ -181,5 +190,22 @@ public class Main {
         }
 
         return new Long[]{preProc, sum / li.size()};
+    }
+
+
+    public static ArrayList<String> getItem() {
+        String[] tc = {
+                "affan.dhia.a",
+                "affan.ardhiva",
+                "ardhiva.affan",
+                "affan.dhia.a201",
+                "affan.dhia.a211",
+                "affan.dhia.a231",
+                "affan.dhia.a251",
+                "ayu.indah.d231",
+                "ayu.dhia.a251",
+                "ardhiva.indah.a251",
+        };
+        return new ArrayList<>(Arrays.asList(tc));
     }
 }
