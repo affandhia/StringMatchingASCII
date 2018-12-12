@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -18,30 +19,37 @@ public class Main {
 
     public static void main(String[] args) {
 //        System.out.println(NaiveStringMatcher.search1("nara", "binaragaa"));
-        int[] ns = {100, 1000, 10000, 100000, 300000, 500000, 1000000, 3000000, 5000000};
+        int[] ns = {100, 1000, 10000, 100000, 300000, 500000, 1000000, 3000000, 5000000, 10000000};
+        List<Long[]> times = new ArrayList<>();
 
         for (int n :
                 ns) {
-//            if (n > ns[0]) continue;
-            System.out.println("username-total" + n);
+//            if (n > ns[2]) continue;
+            System.out.println("\n\n ==================== [username-total : " + n + " ]");
 
             int[] indexes = new java.util.Random().ints(0, n).distinct().limit((int) (10)).toArray();
 
-            Integer[] intIndexs = Arrays.stream( indexes ).boxed().toArray( Integer[]::new );
+            Integer[] intIndexs = Arrays.stream(indexes).boxed().toArray(Integer[]::new);
 
             lTc = new LinkedList<>(Arrays.asList(intIndexs));
 
             filePath = String.format("dist/usernames-%d.txt", n);
 
+            times.add(new Long[]{(long) 9999999, (long) n});
+
             System.out.println("\n=================================================== [BF]\n");
-            Main.testBF();
+            times.add(Main.testBF());
             System.out.println("\n=================================================== [KMP]\n");
-            Main.testKMP();
+            times.add(Main.testKMP());
             System.out.println("\n=================================================== [SMASCII]\n");
-            Main.testSMASCII();
+            times.add(Main.testSMASCII());
         }
 
-
+        System.out.println("\n\n\n\n");
+        for (Long[] time :
+                times) {
+            System.out.printf("%d\t%d\n", time[0], time[1]);
+        }
     }
 
     public static long wrapperTimerAndPrint(Runnable func) {
@@ -70,12 +78,12 @@ public class Main {
         return finish - start;
     }
 
-        public static void printTime(String title, long timeElapsed) {
+    public static void printTime(String title, long timeElapsed) {
         System.out.printf("%s\t%d\n", title, timeElapsed);
 
     }
 
-    public static void testKMP() {
+    public static Long[] testKMP() {
         AtomicReference<KmpStringMatcher> kmp = new AtomicReference<>();
         StringBuilder contentBuilder = new StringBuilder();
         ArrayList<String> li = new ArrayList<>();
@@ -97,25 +105,27 @@ public class Main {
 
         String text = contentBuilder.toString();
 
+        long sum = 0;
         for (String tc :
                 li) {
             times.add(wrapperTimer(() -> {
                 kmp.set(new KmpStringMatcher(tc));
             }));
-            wrapperTimerAndPrint(tc, () -> {
+            sum += wrapperTimerAndPrint(tc, () -> {
                 kmp.get().search(text);
             });
         }
-        long sum = 0;
+        long timeSum = 0;
         for (long time :
                 times) {
-            sum += time;
+            timeSum += time;
         }
 
-        printTime(namePreProc, sum / times.size());
+        printTime(namePreProc, timeSum / times.size());
+        return new Long[]{timeSum / times.size(), sum / li.size()};
     }
 
-    public static void testBF() {
+    public static Long[] testBF() {
         printTime(namePreProc, 0);
         AtomicReference<KmpStringMatcher> kmp = new AtomicReference<>();
         StringBuilder contentBuilder = new StringBuilder();
@@ -136,16 +146,18 @@ public class Main {
 
         String text = contentBuilder.toString();
 
+        long sum = 0;
         for (String tc :
                 li) {
-            wrapperTimerAndPrint(tc, () -> NaiveStringMatcher.search1(tc, text));
+            sum += wrapperTimerAndPrint(tc, () -> NaiveStringMatcher.search1(tc, text));
         }
+        return new Long[]{(long) 0, sum / li.size()};
     }
 
-    public static void testSMASCII() {
+    public static Long[] testSMASCII() {
         ArrayList<String> li = new ArrayList<>();
 
-        wrapperTimerAndPrint(namePreProc, () -> {
+        long preProc = wrapperTimerAndPrint(namePreProc, () -> {
             try (Stream<String> stream = Files.lines(Paths.get(filePath))) {
                 AtomicInteger counter = new AtomicInteger();
                 stream.forEach(e -> {
@@ -159,12 +171,15 @@ public class Main {
             }
         });
 
+        long sum = 0;
+
         for (String tc :
                 li) {
-            wrapperTimerAndPrint(tc, () -> {
+            sum += wrapperTimerAndPrint(tc, () -> {
                 item.find(tc);
             });
         }
 
+        return new Long[]{preProc, sum / li.size()};
     }
 }
