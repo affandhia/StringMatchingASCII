@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 public class SMASCII {
     private HashMap<Integer, AlphabetDatabase> database;
+    private int totalIter = 0;
 
     public SMASCII() {
         this.database = new HashMap<>();
@@ -37,6 +38,7 @@ public class SMASCII {
     }
 
     public boolean find(String text) {
+        this.totalIter = 0;
         text = text.toLowerCase();
 
         AlphabetDatabase db = this.getAlphabetDatabase(text);
@@ -50,10 +52,11 @@ public class SMASCII {
         while (iterator.hasNext()) {
             String next = iterator.next();
 
-
+            if (this.checkString(text, next)) return true;
+            this.totalIter += 1;
         }
 
-        return stringDbList.indexOf(text) >= 0;
+        return false;
     }
 
     private boolean checkString(String first, String second) {
@@ -77,10 +80,8 @@ public class SMASCII {
             nIdx = ints[1];
         }
 
-        System.out.println("checking");
         for (int i = fIdx + 1; i < lIdx; i++) {
             if (i == mIdx || i == nIdx) continue;
-            System.out.println("hello");
             if (first.charAt(i) != second.charAt(i)) return false;
         }
 

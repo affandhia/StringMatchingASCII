@@ -51,19 +51,12 @@ def main():
     except:
         pass
     
+    print("generating...")
     distinct = set()
     while len(distinct) < n:
         distinct.add(generateName())
 
-    min_len = 99999
-    max_len = 0
-    for i in distinct:
-        max_len = max(max_len, len(i))
-        min_len = min(min_len, len(i))
-
-    print(max_len)
-    print(min_len)
-
+    print("writing...")
     writeToFile(distinct)
 
 if __name__ == '__main__':
